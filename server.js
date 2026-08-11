@@ -6,6 +6,7 @@
  *
  *  Deploy: Railway (railway.com)
  *  Repo:   github.com/jadenadm2-afk/server
+ *  Build:  Force-rebuild 2026-08-11
  * ══════════════════════════════════════════════════════════════
  */
 
