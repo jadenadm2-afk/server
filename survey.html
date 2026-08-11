@@ -1733,28 +1733,34 @@
             answersData['submitted_at'] = new Date().toISOString();
         }
 
-        // معالجة إرسال النموذج — الحفظ في localStorage (يظهر في الداشبورد فوراً)
-        function handleSurveySubmit(e) {
+        // معالجة إرسال النموذج — الإرسال للسيرفر وحفظ محلي احتياطي
+        async function handleSurveySubmit(e) {
             e.preventDefault();
             
             const submitBtn = document.getElementById('btnSubmit');
             submitBtn.disabled = true;
             submitBtn.textContent = '⏳ جارٍ الحفظ...';
 
-            // ── حفظ في localStorage (البكند المدمج) ──
             try {
-                const id = 'resp_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
-                const record = {
-                    id,
-                    submitted_at: new Date().toISOString(),
-                    ...answersData
-                };
-                const all = JSON.parse(localStorage.getItem('survey_responses') || '[]');
-                all.push(record);
-                localStorage.setItem('survey_responses', JSON.stringify(all));
-                console.log('✅ تم الحفظ في قاعدة البيانات المحلية. ID:', id);
+                // إرسال للسيرفر مباشرة
+                const res = await fetch('/api/responses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(answersData)
+                });
+                if (!res.ok) throw new Error();
+                console.log('✅ تم الحفظ في السيرفر بنجاح');
             } catch(err) {
-                console.error('خطأ في الحفظ:', err);
+                console.warn('⚠️ السيرفر غير متوفر، سيتم الحفظ محلياً.');
+                try {
+                    const id = 'resp_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+                    const record = { id, submitted_at: new Date().toISOString(), ...answersData };
+                    const all = JSON.parse(localStorage.getItem('survey_responses') || '[]');
+                    all.push(record);
+                    localStorage.setItem('survey_responses', JSON.stringify(all));
+                } catch(e) {
+                    console.error('خطأ الحفظ المحلي:', e);
+                }
             }
 
             submitBtn.disabled = false;
