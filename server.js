@@ -117,21 +117,24 @@ app.use((req,_,next) => {
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 
-// Root
-app.get('/', (req,res) => res.json({
+// Serve static files from root directory
+app.use(express.static(__dirname));
+
+// Root path - Serve survey form
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'survey.html'));
+});
+
+// Serve dashboard
+app.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
+
+// API Status
+app.get('/api', (req,res) => res.json({
     status:  'online 🟢',
     service: 'Zalingei Academic Survey API',
     version: '1.0.0',
-    routes: {
-        'GET  /api/health':          'Health + total count',
-        'GET  /api/responses':       'All responses (filter: ?profession=&age=&limit=)',
-        'GET  /api/responses/:id':   'Single response',
-        'POST /api/responses':       'Submit survey response',
-        'DELETE /api/responses/:id': 'Delete single response',
-        'DELETE /api/responses/all': 'Clear all (requires X-Admin-Key header)',
-        'GET  /api/stats':           'Full statistics & charts data',
-        'GET  /api/export':          'Download full data as JSON',
-    },
     timestamp: new Date().toISOString(),
 }));
 
