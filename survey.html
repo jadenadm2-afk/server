@@ -1,0 +1,1798 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>استمارة الاستبيان الميداني - حوكمة الموارد الرعوية وفض النزاعات بمحلية زالنجي</title>
+    
+    <!-- استيراد خطوط جوجل العربية المميزة -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Amiri:ital,wght@0,400;0,700;1,400&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #1b4d3e; /* زمردي رعوي */
+            --primary-light: #2c6e5a;
+            --secondary-color: #c29b38; /* ذهبي رملي */
+            --secondary-hover: #a8832a;
+            --text-color: #2b2b2b;
+            --bg-color: #fcfbf9; /* كريمي دافئ */
+            --card-bg: #ffffff;
+            --body-bg: #e6e3df;
+            --border-color: #e0dad5;
+            --accent-color: #e76f51; /* طوبي للتحذيرات والأزرار الهامة */
+            --success-color: #2a9d8f;
+            --shadow: 0 10px 30px rgba(27, 77, 62, 0.08);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.theme-dark {
+            --text-color: #e0e0e0;
+            --bg-color: #1a1e1b;
+            --card-bg: #242926;
+            --body-bg: #121513;
+            --border-color: #323d37;
+            --primary-color: #8fbc8f;
+            --primary-light: #a9dfbf;
+            --secondary-color: #d4af37;
+            --secondary-hover: #f1c40f;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: var(--transition);
+            background-image: 
+                radial-gradient(var(--border-color) 1px, transparent 0),
+                radial-gradient(var(--border-color) 1px, transparent 0);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
+
+        /* حاوية الاستبيان الرئيسية */
+        .survey-container {
+            width: 100%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        /* شريط التزيين الذهبي في الأعلى */
+        .survey-header-accent {
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+        }
+
+        /* رأس الصفحة والتوجيه */
+        .survey-header {
+            padding: 35px 35px 20px 35px;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            background-color: rgba(27, 77, 62, 0.02);
+        }
+
+        .header-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .btn-back-thesis {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 8px 16px;
+            background-color: rgba(27, 77, 62, 0.08);
+            border-radius: 30px;
+            transition: var(--transition);
+        }
+
+        .btn-back-thesis:hover {
+            background-color: var(--primary-color);
+            color: #ffffff;
+            transform: translateX(-3px);
+        }
+
+        .theme-toggle {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        body.theme-dark .theme-toggle {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .survey-title-wrapper {
+            text-align: center;
+        }
+
+        .survey-badge {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .survey-title {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 24px;
+            color: var(--primary-color);
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .survey-subtitle {
+            font-size: 15px;
+            color: #777;
+            font-weight: 400;
+        }
+
+        body.theme-dark .survey-subtitle {
+            color: #aaa;
+        }
+
+        /* شريط التقدم */
+        .progress-bar-container {
+            padding: 20px 35px;
+            background-color: rgba(27, 77, 62, 0.01);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            left: 0;
+            height: 3px;
+            background-color: var(--border-color);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .progress-line-fill {
+            position: absolute;
+            top: 50%;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-color);
+            z-index: 2;
+            transform: translateY(-50%);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        .step-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--card-bg);
+            border: 3px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #777;
+            position: relative;
+            z-index: 3;
+            transition: var(--transition);
+        }
+
+        body.theme-dark .step-indicator {
+            color: #aaa;
+        }
+
+        .step-indicator.active {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 0 10px rgba(27, 77, 62, 0.3);
+        }
+
+        .step-indicator.completed {
+            border-color: var(--primary-color);
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+        }
+
+        .step-indicator-label {
+            position: absolute;
+            top: 38px;
+            font-size: 10px;
+            white-space: nowrap;
+            display: none; /* إخفاء لتوفير مساحة على شاشات الجوال */
+        }
+
+        .step-indicator.active .step-indicator-label {
+            display: block;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* محتوى الخطوات */
+        .survey-content {
+            padding: 35px;
+            min-height: 350px;
+        }
+
+        .survey-step {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .survey-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* صفحة الترحيب */
+        .welcome-card {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .welcome-logo {
+            font-size: 55px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .academic-disclaimer {
+            font-family: 'Amiri', serif;
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            text-align: justify;
+            color: var(--text-color);
+            padding: 20px;
+            background-color: rgba(194, 155, 56, 0.05);
+            border-right: 4px solid var(--secondary-color);
+            border-radius: 0 12px 12px 0;
+        }
+
+        .welcome-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .feature-item {
+            padding: 15px;
+            background-color: rgba(27, 77, 62, 0.03);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 24px;
+            color: var(--secondary-color);
+            margin-bottom: 8px;
+        }
+
+        .feature-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .feature-desc {
+            font-size: 12px;
+            color: #777;
+        }
+
+        /* البيانات الديموغرافية */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        /* أزرار اختيار المهنة المخصصة (مزارع / راعي) */
+        .profession-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .profession-card {
+            border: 2px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            background-color: var(--card-bg);
+        }
+
+        .profession-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-3px);
+        }
+
+        .profession-card.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(27, 77, 62, 0.05);
+            box-shadow: 0 8px 20px rgba(27, 77, 62, 0.1);
+        }
+
+        .profession-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .profession-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .profession-card.selected .profession-title {
+            color: var(--primary-color);
+        }
+
+        /* أزرار الاختيار الراديوية المخصصة للمستويات والعمر */
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .custom-radio {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .custom-radio input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-box {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 18px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            background-color: var(--card-bg);
+            transition: var(--transition);
+            display: block;
+        }
+
+        .custom-radio:hover .radio-box {
+            border-color: var(--primary-light);
+            background-color: rgba(27, 77, 62, 0.01);
+        }
+
+        .custom-radio input:checked + .radio-box {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(27, 77, 62, 0.15);
+        }
+
+        /* حقول الإدخال النصية المودرن */
+        .text-input-wrapper {
+            position: relative;
+        }
+
+        .modern-input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-family: inherit;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .modern-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(27, 77, 62, 0.1);
+        }
+
+        /* تصميم أسئلة مقياس ليكرت (Likert Scale) */
+        .question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: var(--card-bg);
+            transition: var(--transition);
+        }
+
+        .question-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+            border-color: var(--primary-light);
+        }
+
+        .question-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .question-num {
+            background-color: rgba(27, 77, 62, 0.08);
+            color: var(--primary-color);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* خيارات مقياس ليكرت في سطر واحد */
+        .likert-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .likert-radio {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .likert-radio input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .likert-box {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            background-color: var(--card-bg);
+            transition: var(--transition);
+            display: block;
+        }
+
+        .likert-radio:hover .likert-box {
+            border-color: var(--primary-light);
+        }
+
+        .likert-radio input:checked + .likert-box {
+            border-color: var(--primary-color);
+            background-color: var(--primary-color);
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(27, 77, 62, 0.15);
+        }
+
+        /* تلوين مختلف حسب مستويات مقياس ليكرت */
+        .likert-radio.agree input:checked + .likert-box {
+            background-color: var(--success-color);
+            border-color: var(--success-color);
+        }
+
+        .likert-radio.disagree input:checked + .likert-box {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+        }
+
+        /* ذيل الصفحة وأزرار التنقل */
+        .survey-footer {
+            padding: 25px 35px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(27, 77, 62, 0.02);
+        }
+
+        .btn {
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(27, 77, 62, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            border-color: var(--text-color);
+        }
+
+        body.theme-dark .btn-secondary:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* لوحة شاشة التأكيد والإرسال */
+        .submit-preview-card {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .preview-summary {
+            background-color: rgba(27, 77, 62, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: right;
+        }
+
+        .preview-summary h4 {
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .preview-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .preview-label {
+            font-weight: 700;
+            color: #666;
+        }
+
+        body.theme-dark .preview-label {
+            color: #aaa;
+        }
+
+        /* شاشة النجاح وعرض التحليلات التفاعلية */
+        .success-screen {
+            display: none;
+            padding: 40px 35px;
+            text-align: center;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(42, 157, 143, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px auto;
+            color: var(--success-color);
+            font-size: 40px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(42, 157, 143, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(42, 157, 143, 0); }
+        }
+
+        .success-title {
+            font-family: 'Reem Kufi', sans-serif;
+            font-size: 26px;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .success-msg {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        body.theme-dark .success-msg {
+            color: #aaa;
+        }
+
+        /* بطاقة التحليلات والإحصائيات للردود */
+        .analytics-dashboard {
+            margin: 30px 0;
+            background-color: rgba(194, 155, 56, 0.03);
+            border: 1px dashed var(--secondary-color);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: right;
+        }
+
+        .dashboard-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 20px;
+            align-items: center;
+        }
+
+        @media (max-width: 600px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .chart-stats-list {
+            list-style: none;
+        }
+
+        .stat-item {
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .stat-bar-container {
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 1s ease-out;
+        }
+
+        /* رسومات التحقق من الأخطاء والاهتزاز */
+        .shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(6px); }
+            40%, 80% { transform: translateX(-6px); }
+        }
+
+        .error-message {
+            color: var(--accent-color);
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 8px;
+            display: none;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* وضع الطباعة والتصدير */
+        @media print {
+            body {
+                background: white;
+                color: black;
+                padding: 0;
+            }
+            .survey-container {
+                box-shadow: none;
+                border: none;
+                max-width: 100%;
+            }
+            .survey-footer, .header-controls, .progress-bar-container, .btn {
+                display: none !important;
+            }
+            .survey-step {
+                display: block !important;
+                page-break-after: always;
+            }
+            .success-screen {
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body class="theme-classic">
+
+    <div class="survey-container">
+        <!-- شريط التزيين -->
+        <div class="survey-header-accent"></div>
+        
+        <!-- رأس الصفحة -->
+        <div class="survey-header">
+            <div class="header-controls">
+                <a href="index.html#page-70" class="btn-back-thesis" title="العودة لمستند البحث">
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    العودة للبحث الأكاديمي
+                </a>
+                
+                <button class="theme-toggle" id="themeToggler" onclick="toggleTheme()" title="تغيير المظهر">
+                    🌓
+                </button>
+            </div>
+            
+            <div class="survey-title-wrapper">
+                <span class="survey-badge">ملحق (أ) - استمارة إلكترونية تفاعلية</span>
+                <h1 class="survey-title">استمارة الاستبيان الميداني للرعاة والمزارعين</h1>
+                <p class="survey-subtitle">حول حوكمة الموارد الرعوية وفض النزاعات بمحلية زالنجي</p>
+            </div>
+        </div>
+
+        <!-- شريط الخطوات -->
+        <div class="progress-bar-container" id="progressBarContainer">
+            <div class="progress-steps">
+                <div class="progress-line">
+                    <div class="progress-line-fill" id="progressLineFill"></div>
+                </div>
+                <div class="step-indicator active" data-step="0">
+                    أ
+                    <span class="step-indicator-label">البداية</span>
+                </div>
+                <div class="step-indicator" data-step="1">
+                    1
+                    <span class="step-indicator-label">الديموغرافية</span>
+                </div>
+                <div class="step-indicator" data-step="2">
+                    2
+                    <span class="step-indicator-label">الحوكمة</span>
+                </div>
+                <div class="step-indicator" data-step="3">
+                    3
+                    <span class="step-indicator-label">النزاعات</span>
+                </div>
+                <div class="step-indicator" data-step="4">
+                    4
+                    <span class="step-indicator-label">الإدارة الأهلية</span>
+                </div>
+                <div class="step-indicator" data-step="5">
+                    5
+                    <span class="step-indicator-label">الدولة</span>
+                </div>
+                <div class="step-indicator" data-step="6">
+                    م
+                    <span class="step-indicator-label">المراجعة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- فورم الاستبيان -->
+        <form id="surveyForm" onsubmit="handleSurveySubmit(event)">
+            <div class="survey-content">
+                
+                <!-- خطوة 0: الترحيب والتعريف بالبحث -->
+                <div class="survey-step active" data-step="0">
+                    <div class="welcome-card">
+                        <div class="welcome-logo">🌾🐏</div>
+                        <div class="academic-disclaimer">
+                            أخي الكريم المزارع / الراعي، السلام عليكم ورحمة الله وبركاته،<br><br>
+                            بين يديك استمارة استبيان تهدف لجمع بيانات بحثية لغرض نيل درجة البكالوريوس المتقدم حول <strong>"حوكمة الموارد الرعوية وفض النزاعات بمحلية زالنجي"</strong>. نرجو التكرم بالإجابة بوضع الخيار المناسب، علماً بأن البيانات تستخدم لأغراض البحث العلمي فقط وتحاط بالسرية الكاملة والمطلقة.
+                        </div>
+                        
+                        <div class="welcome-features">
+                            <div class="feature-item">
+                                <div class="feature-icon">🛡️</div>
+                                <div class="feature-title">سرية كاملة</div>
+                                <div class="feature-desc">بياناتك محمية لأغراض البحث العلمي</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">⏱️</div>
+                                <div class="feature-title">دقيقتين فقط</div>
+                                <div class="feature-desc">الاستبيان ميسر وسريع للتعبئة</div>
+                            </div>
+                            <div class="feature-item">
+                                <div class="feature-icon">🎓</div>
+                                <div class="feature-title">مساهمة أكاديمية</div>
+                                <div class="feature-desc">تدعم الحلول المستدامة لفض النزاعات</div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" style="margin: 0 auto;" onclick="goToStep(1)">
+                            بدء تعبئة الاستبيان
+                            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(180deg);"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- خطوة 1: البيانات الديموغرافية -->
+                <div class="survey-step" data-step="1">
+                    <!-- المهنة -->
+                    <div class="form-group">
+                        <label class="form-label">المهنة الحالية:</label>
+                        <div class="profession-selector">
+                            <div class="profession-card" data-val="مزارع" onclick="selectProfession(this)">
+                                <span class="profession-icon">🌾</span>
+                                <span class="profession-title">مزارع</span>
+                            </div>
+                            <div class="profession-card" data-val="راعي" onclick="selectProfession(this)">
+                                <span class="profession-icon">🐏</span>
+                                <span class="profession-title">راعي / مربي ماشية</span>
+                            </div>
+                        </div>
+                        <input type="hidden" name="profession" id="input-profession" required>
+                        <div class="error-message" id="err-profession">⚠️ يرجى تحديد المهنة للمتابعة.</div>
+                    </div>
+
+                    <!-- العمر -->
+                    <div class="form-group">
+                        <label class="form-label">العمر:</label>
+                        <div class="option-grid">
+                            <label class="custom-radio">
+                                <input type="radio" name="age" value="أقل من 30 سنة" required>
+                                <span class="radio-box">أقل من 30 سنة</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="age" value="30 - 45 سنة">
+                                <span class="radio-box">30 - 45 سنة</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="age" value="أكثر من 45 سنة">
+                                <span class="radio-box">أكثر من 45 سنة</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="err-age">⚠️ يرجى اختيار الفئة العمرية المناسبة.</div>
+                    </div>
+
+                    <!-- المستوى التعليمي -->
+                    <div class="form-group">
+                        <label class="form-label">المستوى التعليمي:</label>
+                        <div class="option-grid">
+                            <label class="custom-radio">
+                                <input type="radio" name="education" value="أمي" required>
+                                <span class="radio-box">أمي / لم يلتحق بالتعليم</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="education" value="خلاوي وقرآني">
+                                <span class="radio-box">خلاوي وقرآني</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="education" value="أساس وابتدائي">
+                                <span class="radio-box">أساس وابتدائي</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="education" value="ثانوي">
+                                <span class="radio-box">ثانوي</span>
+                            </label>
+                            <label class="custom-radio">
+                                <input type="radio" name="education" value="جامعي فما فوق">
+                                <span class="radio-box">جامعي فما فوق</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="err-education">⚠️ يرجى اختيار المستوى التعليمي.</div>
+                    </div>
+
+                    <!-- الوحدة الإدارية -->
+                    <div class="form-group">
+                        <label class="form-label" for="admin-unit">الوحدة الإدارية (بمحلية زالنجي):</label>
+                        <div class="text-input-wrapper">
+                            <input type="text" id="admin-unit" name="admin_unit" class="modern-input" placeholder="مثال: وحدة زالنجي، وحدة أريبو، إلخ..." required>
+                        </div>
+                        <div class="error-message" id="err-admin_unit">⚠️ يرجى إدخال اسم الوحدة الإدارية.</div>
+                    </div>
+                </div>
+
+                <!-- خطوة 2: المحور الأول: واقع حوكمة الموارد -->
+                <div class="survey-step" data-step="2">
+                    <h3 class="form-label" style="font-size:18px; margin-bottom: 20px;">المحور الأول: واقع حوكمة الموارد والمسارات الرعوية</h3>
+                    
+                    <!-- عبارة 1 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">1</span>
+                            <span>حدود المسارات الرعوية (المراحيل) واضحة ومرسمة ومحددة بشكل علني.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_1" value="موافق جداً" required>
+                                <span class="likert-box">موافق جداً</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_1" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="gov_1" value="محايد">
+                                <span class="likert-box">محايد</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="gov_1" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 2 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">2</span>
+                            <span>القوانين واللوائح الرسمية للمراعي مطبقة بفعالية وسرعة وحسم.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_2" value="موافق جداً" required>
+                                <span class="likert-box">موافق جداً</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_2" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="gov_2" value="محايد">
+                                <span class="likert-box">محايد</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="gov_2" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 3 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">3</span>
+                            <span>المجتمعات المحلية (رعاة ومزارعون) تشارك في وضع وتعديل القواعد الحاكمة للمشاعات.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_3" value="موافق جداً" required>
+                                <span class="likert-box">موافق جداً</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_3" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="gov_3" value="محايد">
+                                <span class="likert-box">محايد</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="gov_3" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 4 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">4</span>
+                            <span>هناك رقابة ومتابعة دورية ولجان مشتركة لحماية المراحيل من التعدي الزراعي.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_4" value="موافق جداً" required>
+                                <span class="likert-box">موافق جداً</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="gov_4" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="gov_4" value="محايد">
+                                <span class="likert-box">محايد</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="gov_4" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- خطوة 3: المحور الثاني: أسباب النزاعات القبلية -->
+                <div class="survey-step" data-step="3">
+                    <h3 class="form-label" style="font-size:18px; margin-bottom: 20px;">المحور الثاني: أسباب ومحفزات النزاعات القبلية حول الموارد</h3>
+                    
+                    <!-- عبارة 1 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">1</span>
+                            <span>التعدي والتوسع الزراعي على المسارات الرعوية والمراحيل التاريخية.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_1" value="موافق بشدة" required>
+                                <span class="likert-box">موافق بشدة</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_1" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="conf_1" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 2 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">2</span>
+                            <span>دخول الماشية المبكر للحقول وتلف المحاصيل الزراعية (الطليق المبكر قبل الحصاد).</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_2" value="موافق بشدة" required>
+                                <span class="likert-box">موافق بشدة</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_2" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="conf_2" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 3 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">3</span>
+                            <span>التنافس الحاد بين الرعاة والمزارعين حول نقاط المياه والأودية خلال مواسم الجفاف.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_3" value="موافق بشدة" required>
+                                <span class="likert-box">موافق بشدة</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_3" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="conf_3" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 4 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">4</span>
+                            <span>انتشار السلاح الناري وتسييس الولاء القبلي والعرقي بين الأطراف المتنازعة.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_4" value="موافق بشدة" required>
+                                <span class="likert-box">موافق بشدة</span>
+                            </label>
+                            <label class="likert-radio agree">
+                                <input type="radio" name="conf_4" value="موافق">
+                                <span class="likert-box">موافق</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="conf_4" value="غير موافق">
+                                <span class="likert-box">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- خطوة 4: المحور الثالث: تقييم الإدارة الأهلية -->
+                <div class="survey-step" data-step="4">
+                    <h3 class="form-label" style="font-size:18px; margin-bottom: 20px;">المحور الثالث: تقييم كفاءة آليات الإدارة الأهلية التقليدية</h3>
+                    
+                    <!-- عبارة 1 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">1</span>
+                            <span>الثقة والقبول الشعبي لقرارات مجالس التحكيم والصلح القبلي (الجودية).</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="ahli_1" value="بدرجة كبيرة" required>
+                                <span class="likert-box">بدرجة كبيرة</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="ahli_1" value="بدرجة متوسطة">
+                                <span class="likert-box">بدرجة متوسطة</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="ahli_1" value="بدرجة ضعيفة">
+                                <span class="likert-box">بدرجة ضعيفة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 2 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">2</span>
+                            <span>القدرة الميدانية لرجالات الإدارة الأهلية على إلزام المخالفين وقمع التعدي على المراحيل.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="ahli_2" value="بدرجة كبيرة" required>
+                                <span class="likert-box">بدرجة كبيرة</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="ahli_2" value="بدرجة متوسطة">
+                                <span class="likert-box">بدرجة متوسطة</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="ahli_2" value="بدرجة ضعيفة">
+                                <span class="likert-box">بدرجة ضعيفة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 3 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">3</span>
+                            <span>سرعة التدخل من رجالات الإدارة الأهلية لفض النزاعات قبل تطورها لصدام مسلح.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="ahli_3" value="بدرجة كبيرة" required>
+                                <span class="likert-box">بدرجة كبيرة</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="ahli_3" value="بدرجة متوسطة">
+                                <span class="likert-box">بدرجة متوسطة</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="ahli_3" value="بدرجة ضعيفة">
+                                <span class="likert-box">بدرجة ضعيفة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 4 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">4</span>
+                            <span>التنسيق والتعاون المشترك بين قيادات الإدارة الأهلية والأجهزة الرسمية للدولة.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="ahli_4" value="بدرجة كبيرة" required>
+                                <span class="likert-box">بدرجة كبيرة</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="ahli_4" value="بدرجة متوسطة">
+                                <span class="likert-box">بدرجة متوسطة</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="ahli_4" value="بدرجة ضعيفة">
+                                <span class="likert-box">بدرجة ضعيفة</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- خطوة 5: المحور الرابع: تقييم دور الدولة -->
+                <div class="survey-step" data-step="5">
+                    <h3 class="form-label" style="font-size:18px; margin-bottom: 20px;">المحور الرابع: تقييم دور المؤسسات الرسمية للدولة والتنسيق الحكومي</h3>
+                    
+                    <!-- عبارة 1 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">1</span>
+                            <span>صيانة وحفر وفتح مصادر المياه (الآبار والحفائر الحكومية) على طول مسارات المراحيل.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="state_1" value="راضٍ تماماً" required>
+                                <span class="likert-box">راضٍ تماماً</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="state_1" value="راضٍ جزئياً">
+                                <span class="likert-box">راضٍ جزئياً</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="state_1" value="غير راضٍ">
+                                <span class="likert-box">غير راضٍ</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 2 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">2</span>
+                            <span>سرعة وقوة إنفاذ القوانين ومعاقبة المتعدين على المراحيل والمحميات الطبيعية.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="state_2" value="راضٍ تماماً" required>
+                                <span class="likert-box">راضٍ تماماً</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="state_2" value="راضٍ جزئياً">
+                                <span class="likert-box">راضٍ جزئياً</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="state_2" value="غير راضٍ">
+                                <span class="likert-box">غير راضٍ</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 3 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">3</span>
+                            <span>تسيير دوريات الأمن لحماية الموسم الزراعي وتأمين مسارات عبور الرحل.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="state_3" value="راضٍ تماماً" required>
+                                <span class="likert-box">راضٍ تماماً</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="state_3" value="راضٍ جزئياً">
+                                <span class="likert-box">راضٍ جزئياً</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="state_3" value="غير راضٍ">
+                                <span class="likert-box">غير راضٍ</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- عبارة 4 -->
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span class="question-num">4</span>
+                            <span>دعم وتمويل لجان التخطيط المشترك لتقليل الفجوة التنسيقية بين الدولة والمجتمع.</span>
+                        </div>
+                        <div class="likert-options">
+                            <label class="likert-radio agree">
+                                <input type="radio" name="state_4" value="راضٍ تماماً" required>
+                                <span class="likert-box">راضٍ تماماً</span>
+                            </label>
+                            <label class="likert-radio">
+                                <input type="radio" name="state_4" value="راضٍ جزئياً">
+                                <span class="likert-box">راضٍ جزئياً</span>
+                            </label>
+                            <label class="likert-radio disagree">
+                                <input type="radio" name="state_4" value="غير راضٍ">
+                                <span class="likert-box">غير راضٍ</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- خطوة 6: المراجعة والإرسال -->
+                <div class="survey-step" data-step="6">
+                    <div class="submit-preview-card">
+                        <span style="font-size: 50px; display:block; margin-bottom: 15px;">📝</span>
+                        <h3 class="form-label" style="font-size:18px; text-align: center; margin-bottom: 5px;">مراجعة نهائية لبيانات الاستبيان</h3>
+                        <p style="font-size:14px; color:#666; margin-bottom: 20px;">يرجى مراجعة إجاباتك قبل إرسالها للتحليل العلمي والبحثي.</p>
+                        
+                        <div class="preview-summary">
+                            <h4>البيانات الديموغرافية الأساسية</h4>
+                            <div class="preview-item">
+                                <span class="preview-label">المهنة الحالية:</span>
+                                <span id="preview-profession" style="font-weight: 700;">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">الفئة العمرية:</span>
+                                <span id="preview-age">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">المستوى التعليمي:</span>
+                                <span id="preview-education">-</span>
+                            </div>
+                            <div class="preview-item">
+                                <span class="preview-label">الوحدة الإدارية:</span>
+                                <span id="preview-admin">-</span>
+                            </div>
+                        </div>
+
+                        <div style="background-color: rgba(42, 157, 143, 0.05); border: 1px solid var(--success-color); padding: 15px; border-radius: 12px; font-size:14px; text-align:right; margin-bottom: 20px; line-height: 1.6;">
+                            🟢 <strong>أقسام المحاور الأربعة مكتملة الإجابة بالكامل.</strong> تم التحقق من سلامة كافة الخيارات التي أدخلتها وجاهزيتها للتجميع الإحصائي.
+                        </div>
+
+                        <div style="font-family:'Amiri', serif; font-size: 16px; margin-bottom: 20px; text-align: center; color: var(--primary-color); font-weight: bold;">
+                            "شاكرين لكم حسن تعاونكم ومساهمتكم في صياغة السلم والاستقرار بمحلية زالنجي"
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- ذيل الفورم للتحكم في الأزرار -->
+            <div class="survey-footer" id="surveyFooter">
+                <button type="button" class="btn btn-secondary" id="btnPrev" onclick="moveStep(-1)" disabled>
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                    السابق
+                </button>
+                <button type="button" class="btn btn-primary" id="btnNext" onclick="moveStep(1)">
+                    التالي
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" style="transform: rotate(180deg);"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </button>
+                <button type="submit" class="btn btn-primary" id="btnSubmit" style="display:none; background-color: var(--success-color);">
+                    إرسال الاستبيان
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+                </button>
+            </div>
+        </form>
+
+        <!-- شاشة النجاح والتقرير الإحصائي الفوري -->
+        <div class="success-screen" id="successScreen">
+            <div class="success-icon-wrapper">
+                ✓
+            </div>
+            <h2 class="success-title">تم إرسال الاستبيان بنجاح!</h2>
+            <p class="success-msg">شكراً جزيلاً لتعاونك ومساهمتك القيمة. تم حفظ إجاباتك بسرية تامة ومزامنتها بنجاح مع البيانات البحثية للبكالوريوس المتقدم.</p>
+            
+            <!-- لوحة التحليلات الرائعة -->
+            <div class="analytics-dashboard">
+                <h3 class="dashboard-title">
+                    <span>📊</span> تقرير الاستبيان الإحصائي الفوري (رأي المستجيب مقارنة بالنتائج العامة)
+                </h3>
+                
+                <div class="chart-grid">
+                    <!-- رسم بياني دائري SVG تفاعلي -->
+                    <div class="chart-container">
+                        <svg width="200" height="200" viewBox="0 0 200 200" style="transform: rotate(-90deg);">
+                            <!-- خلفية الدائرة -->
+                            <circle cx="100" cy="100" r="80" fill="transparent" stroke="var(--border-color)" stroke-width="20" />
+                            <!-- قطاع حوكمة الموارد (أحمر ليدل على الرفض) -->
+                            <circle cx="100" cy="100" r="80" fill="transparent" stroke="var(--accent-color)" stroke-width="20" 
+                                    stroke-dasharray="502.4" stroke-dashoffset="85" style="transition: stroke-dashoffset 1s ease;" />
+                            <!-- قطاع الإدارة الأهلية (أخضر ليدل على القبول) -->
+                            <circle cx="100" cy="100" r="80" fill="transparent" stroke="var(--success-color)" stroke-width="20" 
+                                    stroke-dasharray="502.4" stroke-dashoffset="250" style="transition: stroke-dashoffset 1s ease;" />
+                            <!-- قطاع محايد (ذهبي) -->
+                            <circle cx="100" cy="100" r="80" fill="transparent" stroke="var(--secondary-color)" stroke-width="20" 
+                                    stroke-dasharray="502.4" stroke-dashoffset="400" style="transition: stroke-dashoffset 1s ease;" />
+                            <!-- كتابة النسبة في المركز -->
+                            <g transform="rotate(90 100 100)">
+                                <text x="100" y="95" text-anchor="middle" font-weight="800" font-size="20" fill="var(--primary-color)" font-family="Cairo">ن = 334</text>
+                                <text x="100" y="120" text-anchor="middle" font-weight="600" font-size="12" fill="#777" font-family="Cairo">مستجيب ميداني</text>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <!-- إحصائيات المحاور -->
+                    <div>
+                        <ul class="chart-stats-list">
+                            <li class="stat-item">
+                                <div style="display:flex; justify-content:space-between; font-weight:700;">
+                                    <span>🔴 رفض واقع حوكمة الموارد الرعوية الحالي</span>
+                                    <span>83.5%</span>
+                                </div>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar-fill" style="width: 83.5%; background-color: var(--accent-color);"></div>
+                                </div>
+                            </li>
+                            <li class="stat-item">
+                                <div style="display:flex; justify-content:space-between; font-weight:700;">
+                                    <span>🟢 الثقة الشعبية والقبول للإدارة الأهلية (الجودية)</span>
+                                    <span>76.0%</span>
+                                </div>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar-fill" style="width: 76%; background-color: var(--success-color);"></div>
+                                </div>
+                            </li>
+                            <li class="stat-item">
+                                <div style="display:flex; justify-content:space-between; font-weight:700;">
+                                    <span>🟡 عدم الرضا عن الأداء والتنسيق الحكومي الرسمي</span>
+                                    <span>85.0%</span>
+                                </div>
+                                <div class="stat-bar-container">
+                                    <div class="stat-bar-fill" style="width: 85%; background-color: var(--secondary-color);"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div style="font-size:13px; color:#555; text-align:justify; margin-top: 15px; border-top: 1px solid var(--border-color); padding-top: 15px; line-height: 1.6;">
+                    ℹ️ <strong>ملاحظة تفسيرية:</strong> تشير البيانات الميدانية المجمعة بمحلية زالنجي إلى وجود فجوة كبيرة بين ثقة المجتمع العالية في الحلول العرفية (76.0%) وعجزها الميداني عن إلزام المخالفين (64.4%) بسبب غياب القوة التنفيذية والقوانين الرادعة من جانب الدولة.
+                </div>
+            </div>
+
+            <!-- أزرار ما بعد الإرسال -->
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button type="button" class="btn btn-primary" onclick="window.print()">
+                    📥 طباعة الاستمارة أو حفظها كـ PDF
+                </button>
+                <button type="button" class="btn btn-secondary" onclick="exportAnswersJSON()">
+                    💾 تحميل إجاباتك (ملف JSON)
+                </button>
+                <a href="dashboard.html" class="btn btn-primary" style="text-decoration:none; background-color: var(--secondary-color); color: #fff;">
+                    📊 عرض داشبورد النتائج
+                </a>
+                <a href="index.html#page-70" class="btn btn-secondary" style="text-decoration:none;">
+                    📖 العودة لقراءة فصول البحث
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 6;
+        let answersData = {};
+
+        // تغيير المظهر والسمة
+        function toggleTheme() {
+            const body = document.body;
+            if (body.classList.contains('theme-classic')) {
+                body.classList.remove('theme-classic');
+                body.classList.add('theme-dark');
+                localStorage.setItem('theme', 'dark');
+            } else if (body.classList.contains('theme-dark')) {
+                body.classList.remove('theme-dark');
+                body.classList.add('theme-light');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('theme-light');
+                body.classList.add('theme-classic');
+                localStorage.setItem('theme', 'classic');
+            }
+        }
+
+        // استعادة المظهر المفضل للمستخدم
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            document.body.className = 'theme-' + savedTheme;
+        }
+
+        // اختيار المهنة
+        function selectProfession(card) {
+            document.querySelectorAll('.profession-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            const val = card.getAttribute('data-val');
+            document.getElementById('input-profession').value = val;
+            document.getElementById('err-profession').style.display = 'none';
+        }
+
+        // الانتقال المباشر لخطوة معينة
+        function goToStep(step) {
+            if (step > currentStep && !validateCurrentStep()) {
+                return;
+            }
+            currentStep = step;
+            updateStepDisplay();
+        }
+
+        // التحرك بخطوة نسبية (+1 أو -1)
+        function moveStep(direction) {
+            const nextStep = currentStep + direction;
+            if (direction > 0 && !validateCurrentStep()) {
+                return;
+            }
+            if (nextStep >= 0 && nextStep <= totalSteps) {
+                currentStep = nextStep;
+                updateStepDisplay();
+            }
+        }
+
+        // تحديث واجهة الخطوات وشريط التقدم
+        function updateStepDisplay() {
+            // إخفاء وعرض الخطوات
+            document.querySelectorAll('.survey-step').forEach((step, idx) => {
+                if (idx === currentStep) {
+                    step.classList.add('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+
+            // تحديث شريط التقدم الدائري أو الخطي
+            const progressPercentage = (currentStep / totalSteps) * 100;
+            document.getElementById('progressLineFill').style.width = progressPercentage + '%';
+
+            document.querySelectorAll('.step-indicator').forEach((indicator) => {
+                const stepIdx = parseInt(indicator.getAttribute('data-step'));
+                indicator.classList.remove('active', 'completed');
+                
+                if (stepIdx === currentStep) {
+                    indicator.classList.add('active');
+                } else if (stepIdx < currentStep) {
+                    indicator.classList.add('completed');
+                }
+            });
+
+            // تحديث حالة الأزرار
+            const btnPrev = document.getElementById('btnPrev');
+            const btnNext = document.getElementById('btnNext');
+            const btnSubmit = document.getElementById('btnSubmit');
+
+            if (currentStep === 0) {
+                document.getElementById('progressBarContainer').style.display = 'none';
+                document.getElementById('surveyFooter').style.display = 'none';
+            } else {
+                document.getElementById('progressBarContainer').style.display = 'block';
+                document.getElementById('surveyFooter').style.display = 'flex';
+                
+                btnPrev.disabled = (currentStep === 1);
+                
+                if (currentStep === totalSteps) {
+                    btnNext.style.display = 'none';
+                    btnSubmit.style.display = 'inline-flex';
+                    populatePreviewSummary();
+                } else {
+                    btnNext.style.display = 'inline-flex';
+                    btnSubmit.style.display = 'none';
+                }
+            }
+
+            // التمرير لأعلى النموذج تلقائياً عند تغيير الصفحة لراحة المستجيبين
+            document.querySelector('.survey-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // التحقق من صحة مدخلات الخطوة الحالية
+        function validateCurrentStep() {
+            let isValid = true;
+            const currentStepEl = document.querySelector(`.survey-step[data-step="${currentStep}"]`);
+            
+            // إخفاء رسائل الخطأ السابقة
+            currentStepEl.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
+
+            if (currentStep === 1) {
+                // التحقق من البيانات الديموغرافية
+                const profession = document.getElementById('input-profession').value;
+                if (!profession) {
+                    document.getElementById('err-profession').style.display = 'flex';
+                    isValid = false;
+                }
+
+                const ageChecked = currentStepEl.querySelector('input[name="age"]:checked');
+                if (!ageChecked) {
+                    document.getElementById('err-age').style.display = 'flex';
+                    isValid = false;
+                }
+
+                const educationChecked = currentStepEl.querySelector('input[name="education"]:checked');
+                if (!educationChecked) {
+                    document.getElementById('err-education').style.display = 'flex';
+                    isValid = false;
+                }
+
+                const adminUnit = document.getElementById('admin-unit').value.trim();
+                if (!adminUnit) {
+                    document.getElementById('err-admin_unit').style.display = 'flex';
+                    isValid = false;
+                }
+            } else if (currentStep >= 2 && currentStep <= 5) {
+                // التحقق من الإجابة على كل الأسئلة في المحاور ليكرت
+                const questions = currentStepEl.querySelectorAll('.question-card');
+                questions.forEach(q => {
+                    const radios = q.querySelectorAll('input[type="radio"]');
+                    const name = radios[0].name;
+                    const checked = currentStepEl.querySelector(`input[name="${name}"]:checked`);
+                    
+                    if (!checked) {
+                        q.classList.add('shake');
+                        q.style.borderColor = 'var(--accent-color)';
+                        setTimeout(() => {
+                            q.classList.remove('shake');
+                        }, 400);
+                        isValid = false;
+                    } else {
+                        q.style.borderColor = 'var(--border-color)';
+                    }
+                });
+
+                if (!isValid) {
+                    // عرض تنبيه عام في الأسفل
+                    alert("يرجى الإجابة على كافة عبارات المحور الحالية للاستمرار.");
+                }
+            }
+
+            return isValid;
+        }
+
+        // تجميع وتعبئة ملخص المراجعة في الخطوة الأخيرة
+        function populatePreviewSummary() {
+            const form = document.getElementById('surveyForm');
+            const formData = new FormData(form);
+            
+            document.getElementById('preview-profession').textContent = formData.get('profession') || 'لم يحدد';
+            document.getElementById('preview-age').textContent = formData.get('age') || 'لم يحدد';
+            document.getElementById('preview-education').textContent = formData.get('education') || 'لم يحدد';
+            document.getElementById('preview-admin').textContent = formData.get('admin_unit') || 'لم يحدد';
+
+            // تجميع كافة البيانات لحفظها لاحقاً
+            answersData = {};
+            for (let [key, value] of formData.entries()) {
+                answersData[key] = value;
+            }
+            answersData['submitted_at'] = new Date().toISOString();
+        }
+
+        // معالجة إرسال النموذج — الحفظ في localStorage (يظهر في الداشبورد فوراً)
+        function handleSurveySubmit(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('btnSubmit');
+            submitBtn.disabled = true;
+            submitBtn.textContent = '⏳ جارٍ الحفظ...';
+
+            // ── حفظ في localStorage (البكند المدمج) ──
+            try {
+                const id = 'resp_' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+                const record = {
+                    id,
+                    submitted_at: new Date().toISOString(),
+                    ...answersData
+                };
+                const all = JSON.parse(localStorage.getItem('survey_responses') || '[]');
+                all.push(record);
+                localStorage.setItem('survey_responses', JSON.stringify(all));
+                console.log('✅ تم الحفظ في قاعدة البيانات المحلية. ID:', id);
+            } catch(err) {
+                console.error('خطأ في الحفظ:', err);
+            }
+
+            submitBtn.disabled = false;
+            
+            // إخفاء شريط الخطوات والنموذج
+            document.getElementById('progressBarContainer').style.display = 'none';
+            document.getElementById('surveyForm').style.display = 'none';
+            
+            // عرض شاشة النجاح
+            const successScreen = document.getElementById('successScreen');
+            successScreen.style.display = 'block';
+            
+            // تشغيل حركة شريط الإحصاءات
+            setTimeout(() => {
+                document.querySelectorAll('.stat-bar-fill').forEach(bar => {
+                    const finalWidth = bar.parentElement.previousElementSibling.querySelector('span:last-child').textContent;
+                    bar.style.width = finalWidth;
+                });
+            }, 100);
+        }
+
+        // تصدير الإجابات كملف JSON
+        function exportAnswersJSON() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(answersData, null, 4));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", `استجابة_استبيان_زالنجي_${answersData.profession || 'مستجيب'}.json`);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        // تسجيل Service Worker (البكند المدمج)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js', { scope: './' })
+                .then(r => console.log('[SW] مجهز كبكند:', r.scope))
+                .catch(e => console.warn('[SW] خطأ التسجيل:', e));
+        }
+    </script>
+</body>
+</html>
