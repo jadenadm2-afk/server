@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>داشبورد نتائج الاستبيان — حوكمة الموارد الرعوية بمحلية زالنجي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800;900&family=Reem+Kufi:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        /* ══════════ TOKENS ══════════ */
+        :root {
+            --primary:      #1b4d3e;
+            --primary-l:    #2c6e5a;
+            --gold:         #c29b38;
+            --gold-l:       #e8bf5e;
+            --gold-bg:      rgba(194,155,56,.10);
+            --success:      #2a9d8f;
+            --success-bg:   rgba(42,157,143,.12);
+            --danger:       #e76f51;
+            --danger-bg:    rgba(231,111,81,.12);
+            --info:         #457b9d;
+            --info-bg:      rgba(69,123,157,.12);
+            --purple:       #6d5dfc;
+            --purple-bg:    rgba(109,93,252,.12);
+            --bg:           #0c110e;
+            --bg2:          #111a15;
+            --bg3:          #172018;
+            --bg4:          #1e2b1f;
+            --border:       rgba(255,255,255,.06);
+            --border-g:     rgba(194,155,56,.22);
+            --text:         #e8f0ec;
+            --text2:        #8faa97;
+            --text3:        #5a7263;
+            --radius:       16px;
+            --radius-sm:    10px;
+            --shadow:       0 8px 40px rgba(0,0,0,.6);
+            --font:         'Cairo', sans-serif;
+        }
+        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        /* ── Background glow ── */
+        body::before {
+            content:'';
+            position:fixed; inset:0;
+            background:
+                radial-gradient(ellipse 65% 45% at 8% 5%,  rgba(27,77,62,.75) 0%,transparent 55%),
+                radial-gradient(ellipse 55% 55% at 92% 95%, rgba(194,155,56,.07) 0%,transparent 55%);
+            pointer-events:none; z-index:0;
+        }
+
+        /* ── Layout ── */
+        .wrap {
+            position:relative; z-index:1;
+            max-width:1480px; margin:0 auto;
+            padding:20px 18px 48px;
+            display:flex; flex-direction:column; gap:20px;
+        }
+
+        /* ══════════ HEADER ══════════ */
+        .app-header {
+            display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+            background:var(--bg2);
+            border:1px solid var(--border);
+            border-bottom:1px solid var(--border-g);
+            border-radius:var(--radius);
+            padding:14px 22px;
+            box-shadow:var(--shadow);
+        }
+        .brand { display:flex; align-items:center; gap:14px; }
+        .brand-icon {
+            width:48px; height:48px; border-radius:12px;
+            background:linear-gradient(135deg,var(--primary),var(--primary-l));
+            display:flex; align-items:center; justify-content:center;
+            font-size:24px; flex-shrink:0;
+        }
+        .brand-text h1 { font-size:15px; font-weight:800; }
+        .brand-text span { font-size:11px; color:var(--gold); font-weight:600; }
+
+        .header-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+        .nav-btn {
+            padding:7px 14px; border-radius:var(--radius-sm);
+            border:1px solid var(--border); background:var(--bg3);
+            color:var(--text2); font-family:var(--font); font-size:12px; font-weight:700;
+            text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+            cursor:pointer; transition:all .2s;
+        }
+        .nav-btn:hover { background:var(--bg4); color:var(--text); border-color:var(--border-g); }
+        .nav-btn.gold { border-color:var(--border-g); background:var(--gold-bg); color:var(--gold-l); }
+        .nav-btn.gold:hover { background:var(--gold); color:#000; }
+        .refresh-spinner { animation:spin 1s linear infinite; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+
+        /* ══════════ PAGE TITLE ══════════ */
+        .page-hero {
+            display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;
+        }
+        .page-title { display:flex; align-items:center; gap:14px; }
+        .page-title-icon {
+            width:46px; height:46px; border-radius:12px;
+            background:var(--gold-bg); border:1px solid var(--border-g);
+            display:flex; align-items:center; justify-content:center; font-size:22px;
+        }
+        .page-title h2 { font-size:20px; font-weight:900; }
+        .page-title p { font-size:12px; color:var(--text3); margin-top:2px; }
+
+        /* Status */
+        .status-pill {
+            display:flex; align-items:center; gap:8px;
+            padding:8px 16px; border-radius:30px;
+            background:var(--bg2); border:1px solid var(--border);
+            font-size:12px; color:var(--text2);
+        }
+        .dot {
+            width:8px; height:8px; border-radius:50%;
+            background:var(--success); box-shadow:0 0 8px var(--success);
+            animation:pulse-dot 2s infinite;
+        }
+        .dot.off { background:var(--danger); box-shadow:0 0 8px var(--danger); animation:none; }
+        @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+        /* ══════════ TOP STATS ══════════ */
+        .stats-grid {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:16px;
+        }
+        .stat-card {
+            background:var(--bg2); border:1px solid var(--border);
+            border-radius:var(--radius); padding:20px 18px;
+            position:relative; overflow:hidden;
+            transition:transform .2s, box-shadow .2s;
+            box-shadow:0 4px 20px rgba(0,0,0,.4);
+        }
+        .stat-card:hover { transform:translateY(-4px); box-shadow:var(--shadow); }
+        .stat-card::before {
+            content:''; position:absolute;
+            top:0; right:0; width:100%; height:3px;
+        }
+        .stat-card.total::before    { background:linear-gradient(90deg,transparent,var(--gold)); }
+        .stat-card.farmers::before  { background:linear-gradient(90deg,transparent,var(--success)); }
+        .stat-card.herders::before  { background:linear-gradient(90deg,transparent,var(--info)); }
+        .stat-card.today::before    { background:linear-gradient(90deg,transparent,var(--purple)); }
+
+        .stat-icon {
+            font-size:24px; width:44px; height:44px; border-radius:10px;
+            display:flex; align-items:center; justify-content:center; margin-bottom:12px;
+        }
+        .stat-card.total   .stat-icon { background:var(--gold-bg); }
+        .stat-card.farmers .stat-icon { background:var(--success-bg); }
+        .stat-card.herders .stat-icon { background:var(--info-bg); }
+        .stat-card.today   .stat-icon { background:var(--purple-bg); }
+
+        .stat-label { font-size:11px; color:var(--text3); font-weight:700; margin-bottom:6px; }
+        .stat-value { font-size:28px; font-weight:900; letter-spacing:-1.5px; }
+        .stat-card.total   .stat-value { color:var(--gold-l); }
+        .stat-card.farmers .stat-value { color:var(--success); }
+        .stat-card.herders .stat-value { color:var(--info); }
+        .stat-card.today   .stat-value { color:var(--purple); }
+        .stat-sub { font-size:11px; color:var(--text3); margin-top:6px; }
+
+        /* ══════════ AXIS RATES ══════════ */
+        .axis-grid {
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:16px;
+        }
+        .axis-card {
+            background:var(--bg2); border:1px solid var(--border);
+            border-radius:var(--radius); padding:18px;
+            box-shadow:0 4px 20px rgba(0,0,0,.4);
+        }
+        .axis-label { font-size:12px; color:var(--text2); font-weight:700; margin-bottom:10px; line-height:1.5; }
+        .axis-pct { font-size:30px; font-weight:900; letter-spacing:-2px; margin-bottom:8px; }
+        .axis-bar-bg { height:6px; background:var(--bg4); border-radius:3px; overflow:hidden; }
+        .axis-bar-fill { height:100%; border-radius:3px; transition:width 1.2s ease; }
+        .axis-sub { font-size:10px; color:var(--text3); margin-top:6px; }
+
+        /* ══════════ CHART GRID ══════════ */
+        .charts-row {
+            display:grid;
+            grid-template-columns:1fr 2fr;
+            gap:16px;
+        }
+        .chart-card {
+            background:var(--bg2); border:1px solid var(--border);
+            border-radius:var(--radius); padding:20px;
+            box-shadow:0 4px 20px rgba(0,0,0,.4);
+        }
+        .chart-card-title { font-size:14px; font-weight:800; margin-bottom:4px; }
+        .chart-card-sub   { font-size:11px; color:var(--text3); margin-bottom:16px; }
+        .chart-wrap { position:relative; }
+        .chart-donut { height:260px; display:flex; align-items:center; justify-content:center; }
+        .chart-line  { height:260px; }
+
+        /* ══════════ BOTTOM SECTION ══════════ */
+        .bottom-grid {
+            display:grid;
+            grid-template-columns:1fr 1fr 1fr;
+            gap:16px;
+        }
+        .data-card {
+            background:var(--bg2); border:1px solid var(--border);
+            border-radius:var(--radius); overflow:hidden;
+            box-shadow:0 4px 20px rgba(0,0,0,.4);
+        }
+        .data-card-header {
+            display:flex; align-items:center; justify-content:space-between;
+            padding:16px 18px 12px; border-bottom:1px solid var(--border);
+        }
+        .data-card-header h3 { font-size:13px; font-weight:800; }
+        .data-card-header span { font-size:10px; color:var(--text3); }
+
+        /* ── Likert bar chart ── */
+        .likert-question { padding:14px 18px; border-bottom:1px solid var(--border); }
+        .likert-question:last-child { border-bottom:none; }
+        .lq-text { font-size:12px; font-weight:700; color:var(--text2); margin-bottom:8px; line-height:1.5; }
+        .lq-bars { display:flex; flex-direction:column; gap:4px; }
+        .lq-row  { display:flex; align-items:center; gap:8px; }
+        .lq-label { font-size:10px; color:var(--text3); width:85px; flex-shrink:0; text-align:right; }
+        .lq-bar-bg { flex:1; height:8px; background:var(--bg4); border-radius:4px; overflow:hidden; }
+        .lq-bar-fill { height:100%; border-radius:4px; transition:width 1s ease; }
+        .lq-pct { font-size:10px; color:var(--text3); width:34px; text-align:left; direction:ltr; }
+
+        /* ── Demog table ── */
+        .demog-grid { padding:16px 18px; display:flex; flex-direction:column; gap:10px; }
+        .demog-item { display:flex; align-items:center; gap:10px; }
+        .demog-emoji { font-size:18px; width:30px; text-align:center; }
+        .demog-info  { flex:1; }
+        .demog-name  { font-size:12px; font-weight:700; }
+        .demog-bar-bg { height:5px; background:var(--bg4); border-radius:3px; overflow:hidden; margin-top:3px; }
+        .demog-bar-fill { height:100%; background:var(--gold); border-radius:3px; transition:width 1s ease; }
+        .demog-count { font-size:12px; font-weight:800; color:var(--gold-l); min-width:28px; text-align:left; direction:ltr; }
+
+        /* ── Recent table ── */
+        .resp-table { width:100%; border-collapse:collapse; }
+        .resp-table thead th {
+            padding:9px 12px; font-size:10px; font-weight:800;
+            color:var(--text3); text-align:right; background:var(--bg3); white-space:nowrap;
+        }
+        .resp-table tbody tr { border-bottom:1px solid var(--border); transition:background .15s; }
+        .resp-table tbody tr:last-child { border-bottom:none; }
+        .resp-table tbody tr:hover { background:var(--bg3); }
+        .resp-table tbody td { padding:8px 12px; font-size:11px; color:var(--text2); }
+
+        .badge {
+            display:inline-flex; padding:3px 9px; border-radius:20px;
+            font-size:10px; font-weight:800;
+        }
+        .badge-farmer { background:var(--success-bg); color:var(--success); }
+        .badge-herder { background:var(--info-bg); color:var(--info); }
+
+        /* ══════════ SKELETON / LOADING ══════════ */
+        .skeleton {
+            background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);
+            background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:6px;
+        }
+        @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+        .sk-val { display:inline-block; width:60px; height:26px; }
+        .sk-sm  { display:inline-block; width:40px; height:14px; }
+
+        /* ══════════ TOAST ══════════ */
+        .toast {
+            position:fixed; bottom:24px; left:50%;
+            transform:translateX(-50%) translateY(20px);
+            background:var(--bg3); border:1px solid var(--border-g);
+            color:var(--text); padding:10px 22px; border-radius:30px;
+            font-size:13px; font-weight:700; opacity:0;
+            transition:all .3s; z-index:9999; white-space:nowrap;
+        }
+        .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast.err  { border-color:var(--danger); color:var(--danger); }
+
+        /* ══════════ RESPONSIVE ══════════ */
+        @media(max-width:1100px) {
+            .stats-grid { grid-template-columns:repeat(2,1fr); }
+            .axis-grid  { grid-template-columns:repeat(2,1fr); }
+            .charts-row { grid-template-columns:1fr; }
+            .bottom-grid{ grid-template-columns:1fr; }
+        }
+        @media(max-width:600px) {
+            .stats-grid { grid-template-columns:1fr 1fr; }
+            .stat-value { font-size:20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ════════ HEADER ════════ -->
+<header class="app-header">
+    <div class="brand">
+        <div class="brand-icon">🌾</div>
+        <div class="brand-text">
+            <h1>داشبورد نتائج الاستبيان الميداني</h1>
+            <span>حوكمة الموارد الرعوية وفض النزاعات — محلية زالنجي</span>
+        </div>
+    </div>
+    <div class="header-actions">
+        <a href="survey.html" class="nav-btn">📋 العودة للاستبيان</a>
+        <button class="nav-btn gold" id="refreshBtn" onclick="loadAll()">
+            <svg id="refreshIcon" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                 stroke="currentColor" stroke-width="2.5">
+                <path d="M23 4v6h-6M1 20v-6h6"/>
+                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+            </svg>
+            تحديث البيانات
+        </button>
+    </div>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<div class="page-hero">
+    <div class="page-title">
+        <div class="page-title-icon">📊</div>
+        <div>
+            <h2>لوحة التحليلات الإحصائية</h2>
+            <p id="lastUpdated">جارٍ تحميل البيانات من السيرفر...</p>
+        </div>
+    </div>
+    <div class="status-pill">
+        <div class="dot" id="statusDot"></div>
+        <span id="statusText">يتصل بالسيرفر...</span>
+    </div>
+</div>
+
+<!-- ════════ STATS ════════ -->
+<div class="stats-grid">
+    <div class="stat-card total">
+        <div class="stat-icon">📝</div>
+        <div class="stat-label">إجمالي الاستجابات</div>
+        <div class="stat-value" id="sTotal"><span class="skeleton sk-val"></span></div>
+        <div class="stat-sub">مستجيب ميداني</div>
+    </div>
+    <div class="stat-card farmers">
+        <div class="stat-icon">🌾</div>
+        <div class="stat-label">المزارعون</div>
+        <div class="stat-value" id="sFarmers"><span class="skeleton sk-val"></span></div>
+        <div class="stat-sub" id="sFarmersPct">–</div>
+    </div>
+    <div class="stat-card herders">
+        <div class="stat-icon">🐏</div>
+        <div class="stat-label">الرعاة / مربو الماشية</div>
+        <div class="stat-value" id="sHerders"><span class="skeleton sk-val"></span></div>
+        <div class="stat-sub" id="sHerdersPct">–</div>
+    </div>
+    <div class="stat-card today">
+        <div class="stat-icon">📅</div>
+        <div class="stat-label">استجابات اليوم</div>
+        <div class="stat-value" id="sToday"><span class="skeleton sk-val"></span></div>
+        <div class="stat-sub">منذ منتصف الليل</div>
+    </div>
+</div>
+
+<!-- ════════ AXIS RATES ════════ -->
+<div class="axis-grid">
+    <!-- gov -->
+    <div class="axis-card">
+        <div class="axis-label">✅ موافقة على واقع حوكمة الموارد والمسارات الرعوية</div>
+        <div class="axis-pct" id="rateGov" style="color:var(--success)">–</div>
+        <div class="axis-bar-bg">
+            <div class="axis-bar-fill" id="barGov" style="background:var(--success); width:0%"></div>
+        </div>
+        <div class="axis-sub">المحور الأول (4 عبارات)</div>
+    </div>
+    <!-- conflict -->
+    <div class="axis-card">
+        <div class="axis-label">⚔️ تأييد أسباب النزاعات القبلية حول الموارد</div>
+        <div class="axis-pct" id="rateConf" style="color:var(--danger)">–</div>
+        <div class="axis-bar-bg">
+            <div class="axis-bar-fill" id="barConf" style="background:var(--danger); width:0%"></div>
+        </div>
+        <div class="axis-sub">المحور الثاني (4 عبارات)</div>
+    </div>
+    <!-- native admin -->
+    <div class="axis-card">
+        <div class="axis-label">🤝 تقييم "بدرجة كبيرة" للإدارة الأهلية التقليدية</div>
+        <div class="axis-pct" id="rateAhli" style="color:var(--gold-l)">–</div>
+        <div class="axis-bar-bg">
+            <div class="axis-bar-fill" id="barAhli" style="background:var(--gold); width:0%"></div>
+        </div>
+        <div class="axis-sub">المحور الثالث (4 عبارات)</div>
+    </div>
+    <!-- state -->
+    <div class="axis-card">
+        <div class="axis-label">🏛️ الرضا عن دور مؤسسات الدولة والتنسيق الحكومي</div>
+        <div class="axis-pct" id="rateState" style="color:var(--info)">–</div>
+        <div class="axis-bar-bg">
+            <div class="axis-bar-fill" id="barState" style="background:var(--info); width:0%"></div>
+        </div>
+        <div class="axis-sub">المحور الرابع (4 عبارات)</div>
+    </div>
+</div>
+
+<!-- ════════ CHARTS ════════ -->
+<div class="charts-row">
+    <!-- Donut: profession split -->
+    <div class="chart-card">
+        <div class="chart-card-title">توزيع المستجيبين</div>
+        <div class="chart-card-sub">مزارعون مقابل رعاة</div>
+        <div class="chart-wrap chart-donut">
+            <canvas id="donutChart"></canvas>
+        </div>
+    </div>
+    <!-- Line: timeline -->
+    <div class="chart-card">
+        <div class="chart-card-title">حركة الاستجابات اليومية</div>
+        <div class="chart-card-sub">عدد المستجيبين خلال آخر 30 يوم</div>
+        <div class="chart-wrap chart-line">
+            <canvas id="lineChart"></canvas>
+        </div>
+    </div>
+</div>
+
+<!-- ════════ BOTTOM ════════ -->
+<div class="bottom-grid">
+
+    <!-- Governance Likert chart -->
+    <div class="data-card">
+        <div class="data-card-header">
+            <h3>📜 المحور الأول — حوكمة الموارد</h3>
+            <span>4 عبارات ليكرت</span>
+        </div>
+        <div id="govLikert"></div>
+    </div>
+
+    <!-- Demographics breakdown -->
+    <div class="data-card">
+        <div class="data-card-header">
+            <h3>👥 التوزيع الديموغرافي</h3>
+            <span>حسب الفئة العمرية والتعليم</span>
+        </div>
+        <div class="demog-grid" id="demogGrid">
+            <div style="color:var(--text3);font-size:12px;text-align:center;padding:20px;">جارٍ التحميل...</div>
+        </div>
+    </div>
+
+    <!-- Recent responses -->
+    <div class="data-card">
+        <div class="data-card-header">
+            <h3>🕐 آخر الاستجابات</h3>
+            <span>أحدث 8 استجابات</span>
+        </div>
+        <div style="overflow-x:auto;">
+            <table class="resp-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>المهنة</th>
+                        <th>العمر</th>
+                        <th>التعليم</th>
+                        <th>الوحدة</th>
+                        <th>التاريخ</th>
+                    </tr>
+                </thead>
+                <tbody id="recentBody">
+                    <tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px;">جارٍ التحميل...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</div><!-- end .wrap -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   داشبورد الاستبيان — يقرأ البيانات من localStorage مباشرة
+   (لا يحتاج Node.js أو Python أو أي سيرفر خارجي)
+═══════════════════════════════════════════════════════════════ */
+const LS_KEY = 'survey_responses';
+Chart.defaults.font.family = "'Cairo', sans-serif";
+Chart.defaults.color = '#8faa97';
+
+let donutInst = null, lineInst = null;
+
+/* ═══════════ UTILS ═══════════ */
+const $ = id => document.getElementById(id);
+const fmt = n => Number(n).toLocaleString('en-US');
+const fmtDate = iso => {
+    if (!iso) return '–';
+    const d = new Date(iso);
+    return d.toLocaleDateString('ar-AE', { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+};
+const fmtDay = iso => {
+    if (!iso) return '–';
+    return new Date(iso).toLocaleDateString('ar-AE', { month:'short', day:'numeric' });
+};
+function toast(msg, err=false) {
+    const el = $('toast');
+    el.textContent = msg;
+    el.className = 'toast show' + (err?' err':'');
+    setTimeout(() => el.className='toast', 3500);
+}
+
+/* ═══════════ DATA SOURCE: localStorage ═══════════ */
+function getResponses() {
+    try {
+        return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    } catch { return []; }
+}
+
+function computeStats(responses) {
+    if (!responses.length) {
+        return {
+            total: 0,
+            demographics: { profession:{}, age:{}, education:{}, admin_unit:{} },
+            governance:{}, conflict:{}, native_admin:{}, state_role:{},
+            axis_rates: { governance_approval:0, conflict_agree:0, native_admin_high:0, state_satisfaction:0 },
+            timeline:[]
+        };
+    }
+    const countField = field => {
+        const map = {};
+        responses.forEach(r => { const v = r[field]||'غير محدد'; map[v]=(map[v]||0)+1; });
+        return map;
+    };
+    const likertTally = (prefix, n) => {
+        const res = {};
+        for (let i=1; i<=n; i++) {
+            const key=`${prefix}_${i}`, counts={};
+            responses.forEach(r => { const v=r[key]; if(v) counts[v]=(counts[v]||0)+1; });
+            res[key]=counts;
+        }
+        return res;
+    };
+    const positiveRate = (tally, pos) => {
+        let tot=0, p=0;
+        Object.values(tally).forEach(counts =>
+            Object.entries(counts).forEach(([v,c]) => { tot+=c; if(pos.includes(v)) p+=c; })
+        );
+        return tot===0 ? 0 : Math.round(p/tot*1000)/10;
+    };
+    const governance   = likertTally('gov',   4);
+    const conflict     = likertTally('conf',  4);
+    const native_admin = likertTally('ahli',  4);
+    const state_role   = likertTally('state', 4);
+    const daily = {};
+    responses.forEach(r => {
+        const day=(r.submitted_at||'').slice(0,10);
+        if(day) daily[day]=(daily[day]||0)+1;
+    });
+    const timeline = Object.entries(daily).sort((a,b)=>a[0].localeCompare(b[0])).slice(-30)
+        .map(([date,count])=>({date,count}));
+    return {
+        total: responses.length,
+        demographics: {
+            profession: countField('profession'),
+            age:        countField('age'),
+            education:  countField('education'),
+            admin_unit: countField('admin_unit'),
+        },
+        governance, conflict, native_admin, state_role,
+        axis_rates: {
+            governance_approval: positiveRate(governance,   ['موافق جداً', 'موافق']),
+            conflict_agree:      positiveRate(conflict,     ['موافق بشدة', 'موافق']),
+            native_admin_high:   positiveRate(native_admin, ['بدرجة كبيرة']),
+            state_satisfaction:  positiveRate(state_role,   ['راضٍ تماماً', 'راضٍ جزئياً']),
+        },
+        timeline,
+    };
+}
+
+/* ═══════════ RENDER STATS ═══════════ */
+function renderTopStats(s, responses) {
+    const total   = s.total || 0;
+    const prof    = s.demographics.profession || {};
+    const farmers = prof['مزارع'] || 0;
+    const herders = prof['راعي']  || 0;
+
+    // today
+    const today = new Date().toISOString().slice(0,10);
+    const todayCount = (s.timeline || []).find(d => d.date === today)?.count || 0;
+
+    $('sTotal').textContent   = fmt(total);
+    $('sFarmers').textContent = fmt(farmers);
+    $('sHerders').textContent = fmt(herders);
+    $('sToday').textContent   = fmt(todayCount);
+
+    $('sFarmersPct').textContent = total ? Math.round(farmers/total*100)+'% من الإجمالي' : '–';
+    $('sHerdersPct').textContent = total ? Math.round(herders/total*100)+'% من الإجمالي' : '–';
+}
+
+/* ═══════════ RENDER AXIS RATES ═══════════ */
+function renderAxisRates(rates) {
+    const set = (id, barId, val, suffix='%') => {
+        $(id).textContent  = val + suffix;
+        $(barId).style.width = val + '%';
+    };
+    set('rateGov',   'barGov',   rates.governance_approval  || 0);
+    set('rateConf',  'barConf',  rates.conflict_agree        || 0);
+    set('rateAhli',  'barAhli',  rates.native_admin_high     || 0);
+    set('rateState', 'barState', rates.state_satisfaction    || 0);
+}
+
+/* ═══════════ CHARTS ═══════════ */
+function renderDonut(prof) {
+    const labels = Object.keys(prof);
+    const data   = Object.values(prof);
+    const colors = ['#2a9d8f','#457b9d','#c29b38','#6d5dfc'];
+
+    if (donutInst) donutInst.destroy();
+    donutInst = new Chart($('donutChart').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+            labels,
+            datasets:[{ data, backgroundColor: colors, borderColor:'#111a15', borderWidth:3, hoverOffset:8 }]
+        },
+        options: {
+            responsive:true, maintainAspectRatio:false, cutout:'65%',
+            plugins:{
+                legend:{ position:'bottom', labels:{ padding:14, boxWidth:12 } },
+                tooltip:{ callbacks:{ label: c => ` ${c.label}: ${c.raw} مستجيب` } }
+            }
+        }
+    });
+}
+
+function renderLine(timeline) {
+    const labels = timeline.map(d => fmtDay(d.date));
+    const data   = timeline.map(d => d.count);
+
+    if (lineInst) lineInst.destroy();
+    const ctx = $('lineChart').getContext('2d');
+    const grad = ctx.createLinearGradient(0,0,0,260);
+    grad.addColorStop(0, 'rgba(194,155,56,.25)');
+    grad.addColorStop(1, 'rgba(194,155,56,0)');
+
+    lineInst = new Chart(ctx, {
+        type:'line',
+        data:{
+            labels,
+            datasets:[{
+                label:'عدد الاستجابات',
+                data, borderColor:'#c29b38', backgroundColor:grad,
+                fill:true, tension:0.4, pointRadius:3, pointHoverRadius:7, borderWidth:2
+            }]
+        },
+        options:{
+            responsive:true, maintainAspectRatio:false,
+            plugins:{ legend:{ display:false }, tooltip:{ callbacks:{ label: c => ` ${c.raw} استجابة` } } },
+            scales:{
+                x:{ grid:{ color:'rgba(255,255,255,.04)' }, ticks:{ maxTicksLimit:10, font:{size:10} } },
+                y:{ grid:{ color:'rgba(255,255,255,.04)' }, ticks:{ font:{size:10}, stepSize:1, precision:0 } }
+            }
+        }
+    });
+}
+
+/* ═══════════ RENDER LIKERT ═══════════ */
+const GOV_LABELS = [
+    'حدود المسارات الرعوية واضحة ومرسمة',
+    'القوانين واللوائح الرسمية مطبقة بفعالية',
+    'المجتمعات تشارك في وضع القواعد الحاكمة',
+    'رقابة دورية ولجان لحماية المراحيل'
+];
+const GOV_COLORS = { 'موافق جداً':'#2a9d8f', 'موافق':'#5ec4b9', 'محايد':'#c29b38', 'غير موافق':'#e76f51' };
+
+function renderLikert(tally, labels, colorMap, containerId) {
+    const container = $(containerId);
+    container.innerHTML = '';
+    Object.entries(tally).forEach(([qKey, counts], i) => {
+        const total = Object.values(counts).reduce((a,b)=>a+b, 0) || 1;
+        const div = document.createElement('div');
+        div.className = 'likert-question';
+        div.innerHTML = `<div class="lq-text">${i+1}. ${labels[i] || qKey}</div><div class="lq-bars">
+            ${Object.entries(counts).map(([val, cnt]) => {
+                const pct = Math.round(cnt/total*100);
+                const col = colorMap[val] || '#8faa97';
+                return `<div class="lq-row">
+                    <div class="lq-label">${val}</div>
+                    <div class="lq-bar-bg">
+                        <div class="lq-bar-fill" style="width:${pct}%;background:${col}"></div>
+                    </div>
+                    <div class="lq-pct">${pct}%</div>
+                </div>`;
+            }).join('')}
+        </div>`;
+        container.appendChild(div);
+    });
+    if (Object.keys(tally).length === 0) {
+        container.innerHTML = '<div style="color:var(--text3);font-size:12px;text-align:center;padding:20px;">لا توجد بيانات بعد</div>';
+    }
+}
+
+/* ═══════════ RENDER DEMOG ═══════════ */
+function renderDemog(demographics) {
+    const age  = demographics.age  || {};
+    const edu  = demographics.education || {};
+    const total = Object.values(age).reduce((a,b)=>a+b,0) || 1;
+
+    const ageEmoji = { 'أقل من 30 سنة':'👦', '30 - 45 سنة':'👨', 'أكثر من 45 سنة':'🧓' };
+    const eduEmoji = { 'أمي':'📭', 'خلاوي وقرآني':'📖', 'أساس وابتدائي':'🏫', 'ثانوي':'🎒', 'جامعي فما فوق':'🎓' };
+
+    let html = '<strong style="font-size:11px;color:var(--text3);padding:0 18px;display:block;margin-bottom:8px;margin-top:4px;">الفئة العمرية</strong>';
+    for (const [label, cnt] of Object.entries(age)) {
+        const pct = Math.round(cnt/total*100);
+        html += `<div class="demog-item">
+            <div class="demog-emoji">${ageEmoji[label]||'👤'}</div>
+            <div class="demog-info">
+                <div class="demog-name">${label}</div>
+                <div class="demog-bar-bg"><div class="demog-bar-fill" style="width:${pct}%"></div></div>
+            </div>
+            <div class="demog-count">${cnt}</div>
+        </div>`;
+    }
+
+    const eduTotal = Object.values(edu).reduce((a,b)=>a+b,0) || 1;
+    html += '<strong style="font-size:11px;color:var(--text3);padding:0 18px;display:block;margin:12px 0 8px;border-top:1px solid var(--border);padding-top:12px;">المستوى التعليمي</strong>';
+    for (const [label, cnt] of Object.entries(edu)) {
+        const pct = Math.round(cnt/eduTotal*100);
+        html += `<div class="demog-item">
+            <div class="demog-emoji">${eduEmoji[label]||'📚'}</div>
+            <div class="demog-info">
+                <div class="demog-name">${label}</div>
+                <div class="demog-bar-bg"><div class="demog-bar-fill" style="width:${pct}%;background:var(--info)"></div></div>
+            </div>
+            <div class="demog-count" style="color:var(--info)">${cnt}</div>
+        </div>`;
+    }
+
+    $('demogGrid').innerHTML = html;
+}
+
+/* ═══════════ RENDER RECENT ═══════════ */
+function renderRecent(responses) {
+    const recent = [...responses].reverse().slice(0,8);
+    if (recent.length === 0) {
+        $('recentBody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:20px;">لا توجد استجابات بعد</td></tr>';
+        return;
+    }
+    $('recentBody').innerHTML = recent.map((r, i) => {
+        const isFarmer = r.profession === 'مزارع';
+        const badge = isFarmer
+            ? '<span class="badge badge-farmer">🌾 مزارع</span>'
+            : '<span class="badge badge-herder">🐏 راعي</span>';
+        return `<tr>
+            <td style="color:var(--text3)">${recent.length - i}</td>
+            <td>${badge}</td>
+            <td>${r.age || '–'}</td>
+            <td style="max-width:80px;overflow:hidden;text-overflow:ellipsis;">${r.education || '–'}</td>
+            <td>${(r.admin_unit||'–').slice(0,12)}</td>
+            <td style="direction:ltr;text-align:left;">${fmtDate(r.submitted_at)}</td>
+        </tr>`;
+    }).join('');
+}
+
+/* ═══════════ MAIN LOAD ═══════════ */
+function loadAll() {
+    const btn  = $('refreshBtn');
+    const icon = $('refreshIcon');
+    btn.disabled = true;
+    icon.classList.add('refresh-spinner');
+
+    try {
+        const responses = getResponses();
+        const stats     = computeStats(responses);
+
+        $('statusDot').className  = 'dot';
+        $('statusText').textContent = `✅ متصل — ${stats.total} استجابة محفوظة`;
+        $('lastUpdated').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-AE');
+
+        renderTopStats(stats, responses);
+        renderAxisRates(stats.axis_rates || {});
+
+        if (Object.keys(stats.demographics.profession || {}).length > 0)
+            renderDonut(stats.demographics.profession);
+        if ((stats.timeline || []).length > 0)
+            renderLine(stats.timeline);
+
+        renderLikert(stats.governance || {}, GOV_LABELS, GOV_COLORS, 'govLikert');
+        renderDemog(stats.demographics);
+        renderRecent(responses);
+
+        if (stats.total > 0) toast('✅ تم تحديث البيانات');
+        else {
+            $('statusText').textContent = 'ℹ️ لا توجد استجابات بعد — شارك في الاستبيان أولاً';
+        }
+    } catch(e) {
+        $('statusDot').className = 'dot off';
+        $('statusText').textContent = '⛔ خطأ في قراءة البيانات';
+        toast('⛔ خطأ غير متوقع', true);
+        console.error(e);
+    } finally {
+        btn.disabled = false;
+        icon.classList.remove('refresh-spinner');
+    }
+}
+
+/* ═══════════ BOOT ═══════════ */
+document.addEventListener('DOMContentLoaded', loadAll);
+// Auto-refresh every 30 seconds
+setInterval(loadAll, 30000);
+</script>
+</body>
+</html>
