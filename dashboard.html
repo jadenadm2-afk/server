@@ -501,11 +501,29 @@ function toast(msg, err=false) {
     setTimeout(() => el.className='toast', 3500);
 }
 
-/* ═══════════ DATA SOURCE: localStorage ═══════════ */
-function getResponses() {
+/* ═══════════ DATA SOURCE: API with LocalStorage Fallback ═══════════ */
+async function fetchServerData() {
+    // Try live server API
+    const resStats = await fetch('/api/stats');
+    const resResp  = await fetch('/api/responses');
+    if (!resStats.ok || !resResp.ok) throw new Error("API Error");
+    return {
+        stats: await resStats.json(),
+        responses: await resResp.json(),
+        isLocal: false
+    };
+}
+
+function getLocalData() {
+    let responses = [];
     try {
-        return JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-    } catch { return []; }
+        responses = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    } catch {}
+    return {
+        stats: computeStats(responses),
+        responses: responses,
+        isLocal: true
+    };
 }
 
 function computeStats(responses) {
@@ -754,18 +772,28 @@ function renderRecent(responses) {
 }
 
 /* ═══════════ MAIN LOAD ═══════════ */
-function loadAll() {
+async function loadAll() {
     const btn  = $('refreshBtn');
     const icon = $('refreshIcon');
     btn.disabled = true;
     icon.classList.add('refresh-spinner');
 
     try {
-        const responses = getResponses();
-        const stats     = computeStats(responses);
+        let data;
+        try {
+            data = await fetchServerData();
+            $('statusDot').className  = 'dot';
+            $('statusText').textContent = `✅ متصل بالسيرفر (Railway) — ${data.stats.total} استجابة`;
+        } catch(serverErr) {
+            console.warn("Could not load from API, falling back to LocalStorage:", serverErr);
+            data = getLocalData();
+            $('statusDot').className  = 'dot off';
+            $('statusText').textContent = `⚠️ متصل محلياً فقط — ${data.stats.total} استجابة احتياطية`;
+        }
 
-        $('statusDot').className  = 'dot';
-        $('statusText').textContent = `✅ متصل — ${stats.total} استجابة محفوظة`;
+        const responses = data.responses;
+        const stats     = data.stats;
+
         $('lastUpdated').textContent = 'آخر تحديث: ' + new Date().toLocaleTimeString('ar-AE');
 
         renderTopStats(stats, responses);
@@ -781,12 +809,9 @@ function loadAll() {
         renderRecent(responses);
 
         if (stats.total > 0) toast('✅ تم تحديث البيانات');
-        else {
-            $('statusText').textContent = 'ℹ️ لا توجد استجابات بعد — شارك في الاستبيان أولاً';
-        }
     } catch(e) {
         $('statusDot').className = 'dot off';
-        $('statusText').textContent = '⛔ خطأ في قراءة البيانات';
+        $('statusText').textContent = '⛔ خطأ في تحميل البيانات';
         toast('⛔ خطأ غير متوقع', true);
         console.error(e);
     } finally {
