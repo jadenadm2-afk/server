@@ -82,11 +82,11 @@ def compute_stats(responses):
             results[name] = counts
         return results
 
-    # ── Governance (gov_1..4) ─────────────────────────────────────────────────
-    governance    = likert_tally('gov',   4, responses)
-    conflict      = likert_tally('conf',  4, responses)
-    native_admin  = likert_tally('ahli',  4, responses)
-    state_role    = likert_tally('state', 4, responses)
+    # ── Governance (gov_1..10) ────────────────────────────────────────────────
+    governance    = likert_tally('gov',   10, responses)
+    conflict      = likert_tally('conf',  5,  responses)
+    native_admin  = likert_tally('ahli',  5,  responses)
+    state_role    = likert_tally('state', 10, responses)
 
     # ── Positive-response rates per axis ─────────────────────────────────────
     def positive_rate(tally, positive_values):
@@ -191,7 +191,10 @@ class Handler(http.server.BaseHTTPRequestHandler):
         elif path == '/api/stats':
             self.send_json(compute_stats(read_db()))
 
-        elif path in ('/', '/survey.html'):
+        elif path in ('/', '/index.html'):
+            self.send_static('index.html')
+
+        elif path == '/survey.html':
             self.send_static('survey.html')
 
         elif path == '/dashboard.html':

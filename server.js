@@ -74,10 +74,10 @@ function computeStats(responses) {
         return tot===0 ? 0 : Math.round(pos/tot*1000)/10;
     };
 
-    const governance   = likertTally('gov',   4);
-    const conflict     = likertTally('conf',  4);
-    const native_admin = likertTally('ahli',  4);
-    const state_role   = likertTally('state', 4);
+    const governance   = likertTally('gov',   10);
+    const conflict     = likertTally('conf',  5);
+    const native_admin = likertTally('ahli',  5);
+    const state_role   = likertTally('state', 10);
 
     const daily = {};
     responses.forEach(r => {
@@ -121,9 +121,9 @@ app.use((req,_,next) => {
 // Serve static files from root directory
 app.use(express.static(__dirname));
 
-// Root path - Serve survey form
+// Root path - Serve survey form (index.html or survey.html)
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'survey.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Serve dashboard

@@ -14,7 +14,7 @@
     <div class="bg-decor decor-2"></div>
 
     <div class="container">
-        <div class="card">
+        <div class="card view-full" id="cardContainer">
             <!-- Form Header -->
             <header class="header-section">
                 <div class="header-meta-row">
@@ -50,14 +50,36 @@
                 </div>
             </header>
 
+            <!-- View Mode Switcher -->
+            <div class="view-mode-bar">
+                <div class="view-mode-title">
+                    <span>📋 نمط استعراض الاستمارة:</span>
+                </div>
+                <div class="view-mode-btns">
+                    <button type="button" class="mode-btn active" id="btnModeFull" onclick="setViewMode('full')">📄 عرض كامل متصل (جميع المحاور ظاهرة)</button>
+                    <button type="button" class="mode-btn" id="btnModeWizard" onclick="setViewMode('wizard')">📑 عرض خطوة بخطوة</button>
+                </div>
+            </div>
+
+            <!-- Quick Navigation Tabs -->
+            <div class="survey-tabs-container">
+                <div class="survey-tabs" id="surveyTabs">
+                    <button type="button" class="tab-btn active" id="tab1" onclick="navToTab(1)">١. البيانات الديموغرافية</button>
+                    <button type="button" class="tab-btn" id="tab2" onclick="navToTab(2)">٢. المحور الأول (واقع الحوكمة)</button>
+                    <button type="button" class="tab-btn" id="tab3" onclick="navToTab(3)">٣. المحور الثاني (أسباب النزاعات)</button>
+                    <button type="button" class="tab-btn" id="tab4" onclick="navToTab(4)">٤. المحور الثالث (الإدارة الأهلية)</button>
+                    <button type="button" class="tab-btn" id="tab5" onclick="navToTab(5)">٥. المحور الرابع (دور الدولة)</button>
+                </div>
+            </div>
+
             <!-- Progress Bar -->
             <div class="progress-container">
                 <div class="progress-bar-wrapper">
-                    <div id="progressBar" class="progress-bar"></div>
+                    <div id="progressBar" class="progress-bar" style="width: 0%;"></div>
                 </div>
                 <div class="progress-labels">
-                    <span id="stepIndicator">الخطوة 1 من 5</span>
-                    <span id="percentIndicator">20%</span>
+                    <span id="stepIndicator">نسبة اكتمال الإجابات</span>
+                    <span id="percentIndicator">0%</span>
                 </div>
             </div>
 
@@ -296,7 +318,7 @@
 
                     <!-- Question 7 -->
                     <div class="form-group">
-                        <label class="question-label">7. القوانين والنظم المنظِّمة لاستخدام الموارد الرعوية مطبقة بفعالية.</label>
+                        <label class="question-label">7. الجهات التي تقوم بتحديد المسارات الرعوية (الإدارات الأهلية والجهات الرسمية) محددة ومعروفة بدقة.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q7" value="agree_very" required>
@@ -319,7 +341,7 @@
 
                     <!-- Question 8 -->
                     <div class="form-group">
-                        <label class="question-label">8. الرعاة والمزارعون (المجتمع المحلي) يشاركون في وضع النظم والقوانين المنظِّمة لاستغلال الموارد الرعوية.</label>
+                        <label class="question-label">8. القوانين والنظم المنظِّمة لاستخدام الموارد الرعوية مطبقة بفعالية.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q8" value="agree_very" required>
@@ -342,7 +364,7 @@
 
                     <!-- Question 9 -->
                     <div class="form-group">
-                        <label class="question-label">9. يوجد رقابة ومتابعة دورية لحماية المسارات الرعوية من التعدي عليها بالاستخدامات الأخرى.</label>
+                        <label class="question-label">9. الرعاة والمزارعون (المجتمع المحلي) يشاركون في وضع النظم والقوانين المنظِّمة لاستغلال الموارد الرعوية.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q9" value="agree_very" required>
@@ -358,6 +380,29 @@
                             </label>
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q9" value="disagree">
+                                <span class="likert-text">غير موافق</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 10 -->
+                    <div class="form-group">
+                        <label class="question-label">10. يوجد رقابة ومتابعة دورية لحماية المسارات الرعوية من التعدي عليها بالاستخدامات الأخرى.</label>
+                        <div class="likert-scale">
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis1_q10" value="agree_very" required>
+                                <span class="likert-text">موافق جداً</span>
+                            </label>
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis1_q10" value="agree">
+                                <span class="likert-text">موافق</span>
+                            </label>
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis1_q10" value="neutral">
+                                <span class="likert-text">محايد</span>
+                            </label>
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis1_q10" value="disagree">
                                 <span class="likert-text">غير موافق</span>
                             </label>
                         </div>
@@ -775,13 +820,23 @@
                     </div>
                 </div>
 
-                <!-- Step Actions / Buttons -->
-                <div class="btn-container">
+                <!-- Step Actions / Buttons (for wizard mode) -->
+                <div class="btn-container wizard-nav">
                     <button type="button" class="btn btn-secondary" id="prevBtn" onclick="changeStep(-1)" disabled>
                         <span>&larr;</span> السابق
                     </button>
                     <button type="button" class="btn btn-primary" id="nextBtn" onclick="changeStep(1)">
                         التالي <span>&rarr;</span>
+                    </button>
+                </div>
+
+                <!-- Full Page Submit & Actions (for full page mode) -->
+                <div class="full-page-submit" style="display: flex; flex-direction: column; gap: 12px; margin-top: 30px;">
+                    <button type="submit" id="btnSubmitFull" class="btn btn-primary" style="width: 100%; font-size: 1.15rem; padding: 16px 30px; font-weight: 700; box-shadow: 0 6px 20px rgba(45, 106, 79, 0.35); justify-content: center; cursor: pointer;">
+                        <span>💾 إرسال وحفظ الاستبيان بالكامل</span>
+                    </button>
+                    <button type="button" class="btn btn-secondary" onclick="window.print()" style="width: 100%; font-size: 0.95rem; padding: 12px 20px; justify-content: center; cursor: pointer;">
+                        <span>🖨️ طباعة الاستمارة ورقياً</span>
                     </button>
                 </div>
             </form>
