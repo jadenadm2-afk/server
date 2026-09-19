@@ -85,7 +85,7 @@ def compute_stats(responses):
     # ── Governance (gov_1..10) ────────────────────────────────────────────────
     governance    = likert_tally('gov',   10, responses)
     conflict      = likert_tally('conf',  5,  responses)
-    native_admin  = likert_tally('ahli',  5,  responses)
+    native_admin  = likert_tally('ahli',  6,  responses)
     state_role    = likert_tally('state', 10, responses)
 
     # ── Positive-response rates per axis ─────────────────────────────────────

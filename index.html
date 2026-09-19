@@ -93,22 +93,14 @@
                         القسم الأول: البيانات الديموغرافية العامة للمبحوثين
                     </h2>
                     
-                    <div class="grid-2">
-                        <!-- Name (Optional) -->
-                        <div class="form-group">
-                            <label class="question-label" for="respondentName">الاسم (اختياري):</label>
-                            <input type="text" id="respondentName" name="respondent_name" class="input-text" placeholder="اكتب الاسم هنا (اختياري)...">
-                        </div>
-
-                        <!-- Administrative Unit -->
-                        <div class="form-group">
-                            <label class="question-label" for="adminUnit">الوحدة الإدارية بمحلية زالنجي:</label>
-                            <input type="text" id="adminUnit" name="admin_unit" class="input-text" placeholder="اكتب الوحدة الإدارية هنا..." required>
-                        </div>
+                    <!-- Name (Optional) -->
+                    <div class="form-group">
+                        <label class="question-label" for="respondentName">الاسم (اختياري):</label>
+                        <input type="text" id="respondentName" name="respondent_name" class="input-text" placeholder="اكتب الاسم هنا (اختياري)...">
                     </div>
 
                     <div class="grid-3">
-                        <!-- Current Occupation -->
+                        <!-- 1. Current Occupation -->
                         <div class="form-group">
                             <label class="question-label">1. المهنة الحالية:</label>
                             <div class="options-stack">
@@ -123,7 +115,7 @@
                             </div>
                         </div>
 
-                        <!-- Age -->
+                        <!-- 2. Age -->
                         <div class="form-group">
                             <label class="question-label">2. العمر:</label>
                             <div class="options-stack">
@@ -142,7 +134,7 @@
                             </div>
                         </div>
 
-                        <!-- Education Level -->
+                        <!-- 3. Education Level -->
                         <div class="form-group">
                             <label class="question-label">3. المستوى التعليمي:</label>
                             <div class="options-stack">
@@ -169,18 +161,29 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 4. Administrative Unit -->
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label class="question-label" for="adminUnit">4. الوحدة الإدارية بمحلية زالنجي:</label>
+                        <input type="text" id="adminUnit" name="admin_unit" class="input-text" placeholder="اكتب اسم الوحدة الإدارية هنا..." required>
+                    </div>
+                </div>
+
+                <!-- SECTION 2 HEADER DIVIDER -->
+                <div style="text-align: center; margin: 35px 0 25px 0; padding: 14px 20px; background: linear-gradient(135deg, rgba(27, 77, 62, 0.08), rgba(194, 155, 56, 0.12)); border-radius: 12px; border: 1.5px solid rgba(27, 77, 62, 0.15);">
+                    <h2 style="color: var(--primary-color); font-size: 1.3rem; font-weight: 800; margin: 0;">القسم الثاني: محاور الاستبيان وعبارات القياس</h2>
                 </div>
 
                 <!-- STEP 2: AXIS 1 -->
                 <div class="step-content" id="step2">
                     <h2 class="section-title">
                         <span class="section-icon">٢</span>
-                        المحور الأول: واقع حوكمة الموارد الرعوية
+                        المحور الأول: واقع حوكمة الموارد الرعوية والمسارات (المراحيل)
                     </h2>
 
                     <!-- Question 1 -->
                     <div class="form-group">
-                        <label class="question-label">1. مناطق المخارف والمصايف محددة ورسمة (واضحة ومعروفة للجميع).</label>
+                        <label class="question-label">1. مناطق المخارف والمصايف الرعوية محددة ومرسمة رسمياً للجميع.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q1" value="agree_very" required>
@@ -203,7 +206,7 @@
 
                     <!-- Question 2 -->
                     <div class="form-group">
-                        <label class="question-label">2. زمن دخول مناطق المخارف محدد ومعروف لدى الرعاة.</label>
+                        <label class="question-label">2. زمن دخول مناطق المخارف (الشتوية) محدد ومعروف لدى الرعاة.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q2" value="agree_very" required>
@@ -226,7 +229,7 @@
 
                     <!-- Question 3 -->
                     <div class="form-group">
-                        <label class="question-label">3. مناطق المصايف محددة ومعروفة لدى الجميع.</label>
+                        <label class="question-label">3. مناطق المصايف الرعوية محددة ومعلومة لكافة المستخدمين.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q3" value="agree_very" required>
@@ -249,7 +252,7 @@
 
                     <!-- Question 4 -->
                     <div class="form-group">
-                        <label class="question-label">4. دخول مناطق المخرف محدد من قِبَل الجهات المختصة (الإدارات الأهلية والسلطات).</label>
+                        <label class="question-label">4. وقت دخول مناطق المخرف (الشتاء) محدد ومقيَّد بضوابط رسمية.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q4" value="agree_very" required>
@@ -272,7 +275,7 @@
 
                     <!-- Question 5 -->
                     <div class="form-group">
-                        <label class="question-label">5. الخروج من مناطق المخرف محدد ومنظم من قِبَل الجهات المختصة.</label>
+                        <label class="question-label">5. وقت الخروج من مناطق المخرف محدد وملتزم به من قِبَل الرعاة.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q5" value="agree_very" required>
@@ -295,7 +298,7 @@
 
                     <!-- Question 6 -->
                     <div class="form-group">
-                        <label class="question-label">6. زمن الطلق محدد من قِبَل الإدارات الأهلية ومعلوم لدى الرعاة.</label>
+                        <label class="question-label">6. زمن الطلق (الرعي الحر) محدد من قِبَل الإدارات الأهلية المختصة.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q6" value="agree_very" required>
@@ -318,7 +321,7 @@
 
                     <!-- Question 7 -->
                     <div class="form-group">
-                        <label class="question-label">7. الجهات التي تقوم بتحديد المسارات الرعوية (الإدارات الأهلية والجهات الرسمية) محددة ومعروفة بدقة.</label>
+                        <label class="question-label">7. الجهات المختصة بتحديد المسارات الرعوية (إدارة أهلية / جهات حكومية) واضحة ومعروفة.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q7" value="agree_very" required>
@@ -341,7 +344,7 @@
 
                     <!-- Question 8 -->
                     <div class="form-group">
-                        <label class="question-label">8. القوانين والنظم المنظِّمة لاستخدام الموارد الرعوية مطبقة بفعالية.</label>
+                        <label class="question-label">8. القوانين والنظم المنظِّمة لاستخدام الموارد الرعوية موجودة ومطبقة بفعالية.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q8" value="agree_very" required>
@@ -387,7 +390,7 @@
 
                     <!-- Question 10 -->
                     <div class="form-group">
-                        <label class="question-label">10. يوجد رقابة ومتابعة دورية لحماية المسارات الرعوية من التعدي عليها بالاستخدامات الأخرى.</label>
+                        <label class="question-label">10. هناك رقابة ومتابعة دورية لحماية المسارات الرعوية من التعدي عليها بالاستخدامات الأخرى.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis1_q10" value="agree_very" required>
@@ -418,7 +421,7 @@
 
                     <!-- Question 1 -->
                     <div class="form-group">
-                        <label class="question-label">1. التوسع الزراعي على حساب الأراضي الرعوية والمسارات التاريخية.</label>
+                        <label class="question-label">1. التوسع الزراعي على حساب الأراضي الرعوية (التعدي على المراحيل التاريخية).</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis2_q1" value="agree_strongly" required>
@@ -437,7 +440,7 @@
 
                     <!-- Question 2 -->
                     <div class="form-group">
-                        <label class="question-label">2. الدخول المبكر للمخارف من قِبَل الرعاة قبل انتهاء موسمها.</label>
+                        <label class="question-label">2. الدخول المبكر للمخارف قبل انتهاء موسم الحصاد من قِبَل الرعاة.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis2_q2" value="agree_strongly" required>
@@ -521,7 +524,7 @@
 
                     <!-- Question 1 -->
                     <div class="form-group">
-                        <label class="question-label">1. قبول قرارات الإدارات الأهلية المتعلقة بالموارد الرعوية من قِبَل الرعاة والمزارعين.</label>
+                        <label class="question-label">1. قبول قرارات الإدارات الأهلية وتنفيذها طوعاً من قِبَل أطراف النزاع.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis3_q1" value="high" required>
@@ -540,7 +543,7 @@
 
                     <!-- Question 2 -->
                     <div class="form-group">
-                        <label class="question-label">2. تفويض الإدارات الأهلية في كل الشؤون التي تخص الموارد الرعوية من قِبَل المجتمع.</label>
+                        <label class="question-label">2. تفويض الإدارات الأهلية في كل الشؤون التي تخص الموارد الرعوية وإدارتها.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis3_q2" value="high" required>
@@ -559,7 +562,7 @@
 
                     <!-- Question 3 -->
                     <div class="form-group">
-                        <label class="question-label">3. القدرة الميدانية لرجالات الإدارة الأهلية على إلزام المخالفين وقمع التعديات على الموارد الرعوية.</label>
+                        <label class="question-label">3. الثقة والقبول الشعبي لقرارات مجالس التحكيم والصلح (الجودية).</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis3_q3" value="high" required>
@@ -578,7 +581,7 @@
 
                     <!-- Question 4 -->
                     <div class="form-group">
-                        <label class="question-label">4. سرعة التدخل لفض الاحتكاكات والنزاعات الرعوية قبل تطورها إلى اصطدام مسلح.</label>
+                        <label class="question-label">4. القدرة الميدانية لرجالات الإدارة الأهلية على إلزام المخالفين وقمع التعديات.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis3_q4" value="high" required>
@@ -597,7 +600,7 @@
 
                     <!-- Question 5 -->
                     <div class="form-group">
-                        <label class="question-label">5. التنسيق والتعاون المشترك بين الإدارة الأهلية والأجهزة الرسمية للدولة في شؤون الموارد الرعوية.</label>
+                        <label class="question-label">5. سرعة التدخل لفض الاحتكاكات والنزاعات قبل تطورها إلى اصطدام مسلح.</label>
                         <div class="likert-scale">
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis3_q5" value="high" required>
@@ -609,6 +612,25 @@
                             </label>
                             <label class="likert-option" onclick="selectLikertOption(this)">
                                 <input type="radio" name="axis3_q5" value="low">
+                                <span class="likert-text">بدرجة ضعيفة</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Question 6 -->
+                    <div class="form-group">
+                        <label class="question-label">6. التنسيق والتعاون المشترك بين الإدارة الأهلية والأجهزة الرسمية للدولة.</label>
+                        <div class="likert-scale">
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis3_q6" value="high" required>
+                                <span class="likert-text">بدرجة كبيرة</span>
+                            </label>
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis3_q6" value="medium">
+                                <span class="likert-text">بدرجة متوسطة</span>
+                            </label>
+                            <label class="likert-option" onclick="selectLikertOption(this)">
+                                <input type="radio" name="axis3_q6" value="low">
                                 <span class="likert-text">بدرجة ضعيفة</span>
                             </label>
                         </div>
@@ -812,8 +834,15 @@
                         </div>
                     </div>
 
+                    <!-- Closing Gratitude Message -->
+                    <div style="text-align: center; margin: 35px 0 20px 0; padding: 20px 25px; background: rgba(27, 77, 62, 0.07); border-right: 4px solid var(--primary-color); border-left: 4px solid var(--secondary-color); border-radius: 12px;">
+                        <p style="color: var(--primary-color); font-size: 1.15rem; font-weight: 800; margin: 0; line-height: 1.6;">
+                            "شاكرين لكم حسن تعاونكم ومساهمتكم في صياغة السلم والاستقرار بمحلية زالنجي"
+                        </p>
+                    </div>
+
                     <!-- Optional Suggestions / Comments -->
-                    <div class="form-group" style="margin-top: 30px; border-top: 1.5px dashed rgba(45, 106, 79, 0.15); padding-top: 20px;">
+                    <div class="form-group" style="margin-top: 25px; border-top: 1.5px dashed rgba(45, 106, 79, 0.15); padding-top: 20px;">
                         <label class="question-label" for="recommendations">ملاحظات أو مقترحات إضافية (اختياري):</label>
                         <p class="question-desc">(يمكنك كتابة أي إضافات، حلول مجتمعية، أو توصيات تراها مناسبة لتضمينها في البحث)</p>
                         <textarea class="textarea-input" id="recommendations" name="recommendations" placeholder="اكتب مقترحاتك هنا..."></textarea>

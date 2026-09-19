@@ -76,7 +76,7 @@ function computeStats(responses) {
 
     const governance   = likertTally('gov',   10);
     const conflict     = likertTally('conf',  5);
-    const native_admin = likertTally('ahli',  5);
+    const native_admin = likertTally('ahli',  6);
     const state_role   = likertTally('state', 10);
 
     const daily = {};

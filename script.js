@@ -291,10 +291,10 @@ function updateProgress() {
     // الديموغرافية: 4 (الوحدة الإدارية، المهنة، العمر، التعليم)
     // المحور الأول: 10
     // المحور الثاني: 5
-    // المحور الثالث: 5
+    // المحور الثالث: 6
     // المحور الرابع: 10
-    // المجموع = 34 سؤال مطلوب
-    const totalRequiredQuestions = 34;
+    // المجموع = 35 سؤال مطلوب
+    const totalRequiredQuestions = 35;
 
     let answeredCount = 0;
 
@@ -317,8 +317,8 @@ function updateProgress() {
         if (form.querySelector(`input[name="axis2_q${i}"]:checked`)) answeredCount++;
     }
 
-    // فحص أسئلة المحور الثالث (1-5)
-    for (let i = 1; i <= 5; i++) {
+    // فحص أسئلة المحور الثالث (1-6)
+    for (let i = 1; i <= 6; i++) {
         if (form.querySelector(`input[name="axis3_q${i}"]:checked`)) answeredCount++;
     }
 
